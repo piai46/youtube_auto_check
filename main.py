@@ -1,4 +1,3 @@
-from fileinput import filename
 import pytube, os, json, requests, datetime
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -17,6 +16,9 @@ SECONDS_BETWEEN_CHECKS = 1800 #1800 seconds = 30 minutes | 3600 seconds = 1 hour
 
 INTRO_PATH = 'D:\\Videos\\Desktop\\intro2.mp4'
 
+COPY_TITLE = 1 
+COPY_DESC = 1 
+COPY_TAGS = 1
 
 class YoutubePost:
     def __init__(self) -> None:
@@ -149,21 +151,29 @@ class YoutubePost:
         sleep(5)
         driver.find_element_by_xpath("//input[@type='file']").send_keys(video_path)
         sleep(5)
-        driver.find_elements_by_id('textbox')[1].send_keys(info['video_desc'])
-        print('Description writed')
-        sleep(2)
+        if COPY_TITLE == 1:
+            #Writing video title
+            driver.find_element_by_id('textbox').send_keys(info['video_title'])
+            print('Title writed')
+            sleep(2)
+        if COPY_DESC == 1:
+            #Writing video description
+            driver.find_elements_by_id('textbox')[1].send_keys(info['video_desc'])
+            print('Description writed')
+            sleep(2)
         driver.find_element_by_xpath("//input[@id='file-loader']").send_keys(thumb_path)
         sleep(2)
         driver.find_element_by_xpath('/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-basics/div[5]/ytkc-made-for-kids-select/div[4]/tp-yt-paper-radio-group/tp-yt-paper-radio-button[2]').click()
         sleep(1)
         driver.find_element_by_xpath('//*[@id="toggle-button"]').click()
         sleep(1)
-        tags = info['video_tags']
-        input_tag = driver.find_element_by_xpath('/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[3]/ytcp-form-input-container/div[1]/div[2]/ytcp-free-text-chip-bar/ytcp-chip-bar/div/input')
-        print('Writing tags...')
-        for tag in tags:
-            input_tag.send_keys(f'{tag}', Keys.ENTER)
-            sleep(1)
+        if COPY_TAGS == 1:
+            tags = info['video_tags']
+            input_tag = driver.find_element_by_xpath('/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[1]/ytcp-video-metadata-editor/div/ytcp-video-metadata-editor-advanced/div[3]/ytcp-form-input-container/div[1]/div[2]/ytcp-free-text-chip-bar/ytcp-chip-bar/div/input')
+            print('Writing tags...')
+            for tag in tags:
+                input_tag.send_keys(f'{tag}', Keys.ENTER)
+                sleep(1)
         driver.find_element_by_xpath('/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[2]/ytcp-button[2]').click()
         sleep(1)
         driver.find_element_by_xpath('/html/body/ytcp-uploads-dialog/tp-yt-paper-dialog/div/ytcp-animatable[2]/div/div[2]/ytcp-button[2]').click()
