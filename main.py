@@ -8,7 +8,7 @@ from PIL import Image
 from time import sleep
 from pathlib import Path
 
-MOZILLA_PROFILE_PATH = 'C:\\Users\\Luis\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\sd637fl6.Channel Music'
+MOZILLA_PROFILE_PATH = 'C:\\Users\\username\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\Channel Profile'
 
 CHANNELS = ['https://www.youtube.com/c/VEVO/videos', 'https://www.youtube.com/channel/UC3XoYTtLJ3c4nIfOj7aEQrQ/videos', 'https://www.youtube.com/channel/UC_BuvUoAdPAy8DTo27otA7A/videos', 'https://www.youtube.com/c/TikTokpositivo/videos']
 
@@ -79,7 +79,7 @@ class YoutubePost:
         print('Adding intro...')
         intro = VideoFileClip(intro_path)
         video = VideoFileClip(f'./videos/{dir_name}/{dir_name}.mp4')
-        final_clip = concatenate_videoclips([intro, video])
+        final_clip = concatenate_videoclips([intro, video], method='compose')
         final_clip.write_videofile(f'./videos/{dir_name}/{dir_name}_full.mp4', logger=None)
         os.remove(f'./videos/{dir_name}/{dir_name}.mp4')
         print('Intro added to video!')
